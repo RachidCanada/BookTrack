@@ -1,6 +1,8 @@
 package com.example.BookTrack.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 public class Book {
@@ -9,9 +11,15 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty(message = "Le titre ne peut pas être vide")
     private String title;
+
+    @NotEmpty(message = "L'auteur ne peut pas être vide")
     private String author;
+
     private String genre;
+
+    @Min(value = 0, message = "Le nombre de copies disponibles doit être positif")
     private int availableCopies;
 
     // Getters et Setters

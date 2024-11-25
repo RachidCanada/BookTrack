@@ -1,26 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestion des Livres</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: #f8f9fa;
+            color: #343a40;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
-            background-color: #6200ea;
-            color: #fff;
-            padding: 20px 0;
-            margin: 0;
-        }
-
-        h2 {
-            color: #6200ea;
             margin-top: 20px;
         }
 
@@ -28,118 +22,107 @@
             width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
-            padding: 10px;
+        table th, table td {
+            padding: 12px 15px;
             text-align: center;
             border: 1px solid #ddd;
         }
 
-        th {
-            background-color: #6200ea;
-            color: #fff;
+        table th {
+            background-color: #343a40;
+            color: white;
         }
 
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
+        table tr:nth-child(even) {
+            background-color: #f2f2f2;
         }
 
-        tr:hover {
+        table tr:hover {
             background-color: #f1f1f1;
         }
 
         a {
             text-decoration: none;
-            color: #6200ea;
-            font-weight: bold;
-            margin: 0 5px;
+            color: #007bff;
         }
 
         a:hover {
-            color: #3700b3;
+            text-decoration: underline;
         }
 
-        form {
+        .form-container {
             width: 50%;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        form label {
-            display: block;
-            margin: 10px 0 5px;
-            font-weight: bold;
-        }
-
-        form input {
-            width: calc(100% - 20px);
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-        }
-
-        form button {
-            background-color: #6200ea;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            border-radius: 3px;
-            font-size: 16px;
-        }
-
-        form button:hover {
-            background-color: #3700b3;
-        }
-
-        .container {
-            max-width: 1200px;
             margin: 0 auto;
+            background-color: #ffffff;
             padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-<h1>Gestion des Livres</h1>
-<div class="container">
+<h1>Liste des Livres</h1>
 
-    <!-- Section : Liste des livres -->
-    <h2>Liste des Livres</h2>
-    <table>
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Titre</th>
-            <th>Auteur</th>
-            <th>Genre</th>
-            <th>Exemplaires Disponibles</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="book : ${books}">
-            <td th:text="${book.id}"></td>
-            <td th:text="${book.title}"></td>
-            <td th:text="${book.author}"></td>
-            <td th:text="${book.genre}"></td>
-            <td th:text="${book.availableCopies}"></td>
-            <td>
-                <a th:href="@{/books/delete/{id}(id=${book.id})}">Supprimer</a>
-                <a th:href="@{/books/edit/{id}(id=${book.id})}">Modifier</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Genre</th>
+        <th>Copies disponibles</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="book : ${books}">
+        <td th:text="${book.id}"></td>
+        <td th:text="${book.title}"></td>
+        <td th:text="${book.author}"></td>
+        <td th:text="${book.genre}"></td>
+        <td th:text="${book.availableCopies}"></td>
+        <td>
+            <a th:href="@{'/books/edit/' + ${book.id}}">Modifier</a> |
+            <a th:href="@{'/books/delete/' + ${book.id}}" onclick="return confirm('Êtes-vous sûr ?')">Supprimer</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-    <!-- Section : Formulaire d'ajout/modification -->
-    <h2 th:if="${book.id != null}" th:text="'Modifier Livre (ID: ' + ${book.id} + ')'">Ajouter un Livre</h2>
+<h2>Ajouter/Modifier un Livre</h2>
+<div class="form-container">
     <form th:action="@{/books}" th:object="${book}" method="post">
         <input type="hidden" th:field="*{id}" />
         <label for="title">Titre :</label>
@@ -149,10 +132,10 @@
         <input type="text" id="author" th:field="*{author}" required />
 
         <label for="genre">Genre :</label>
-        <input type="text" id="genre" th:field="*{genre}" required />
+        <input type="text" id="genre" th:field="*{genre}" />
 
-        <label for="availableCopies">Exemplaires Disponibles :</label>
-        <input type="number" id="availableCopies" th:field="*{availableCopies}" required />
+        <label for="availableCopies">Copies disponibles :</label>
+        <input type="number" id="availableCopies" th:field="*{availableCopies}" min="0" />
 
         <button type="submit">Enregistrer</button>
     </form>
